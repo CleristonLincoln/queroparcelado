@@ -1,6 +1,7 @@
 package br.com.queroparcelado.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -56,6 +57,7 @@ public class Cliente {
     private LocalDateTime dataCadastro;
 
     @JsonIgnore
+   // @JsonIgnoreProperties("cliente")
     @OneToMany(mappedBy = "cliente")
     List<VendaCliente> vendaClienteList = new ArrayList<>();
 
