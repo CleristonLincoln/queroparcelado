@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,7 @@ public class VendaCliente {
     @Column(nullable = false)
     private BigDecimal percentual;
 
+    @CreationTimestamp
     @Column(name = "data_transacao", nullable = false)
     private LocalDateTime dataTransacao;
 
