@@ -16,4 +16,5 @@ public interface ClienteRepository extends CustomJpaRepository<Cliente, Long> {
     Optional<List<Cliente>> findByNomeContaining(String nomeCliente);
     Optional<Cliente> findByCpf(String cpfCliente);
 
+    Optional<Cliente> findByEmail(String email);
 }

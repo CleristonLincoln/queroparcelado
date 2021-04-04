@@ -1,4 +1,4 @@
-package br.com.queroparcelado.domain.model;
+package br.com.queroparcelado.domain.model.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
