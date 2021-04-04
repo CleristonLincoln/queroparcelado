@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
@@ -28,11 +27,17 @@ public class Configuracao {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @PositiveOrZero
-    @Column(name = "n_parcela", nullable = false)
-    private BigDecimal nParcela;
+    // taxa cobrada pela empresa que presta serviço de passar o cartao
+    private BigDecimal taxaCartao;
 
-    @Positive
-    @Column(name = "percentual", nullable = false)
-    private BigDecimal percentual;
+    private BigDecimal taxaAdministrativa;
+
+    @PositiveOrZero
+    @Column(nullable = false)
+    private BigDecimal qtdParcela;
+
+    private BigDecimal valorMinimo;
+
+    private BigDecimal valorMaximo;
+
 }

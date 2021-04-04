@@ -1,7 +1,8 @@
 package br.com.queroparcelado.infraestructure.repository;
 
-import br.com.queroparcelado.domain.model.VendaCliente;
-import br.com.queroparcelado.domain.repository.VendaClienteRepositoryQueries;
+import br.com.queroparcelado.domain.model.produto.Pedido;
+import br.com.queroparcelado.domain.repository.PedidoRepositoryQueries;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -12,34 +13,33 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
-public class VendaClienteRepositoryImpl implements VendaClienteRepositoryQueries {
+public class PedidoRepositoryImpl implements PedidoRepositoryQueries {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager manager;
 
     @Override
-    public List<VendaCliente> filtrarPorTaxa(BigDecimal taxaInicial, BigDecimal taxaFinal) {
+    public List<Pedido> filtrarPorTaxaAdministrativa(BigDecimal taxaInicial, BigDecimal taxaFinal) {
 
         var jpql = new StringBuilder();
         var parametros = new HashMap<String, Object>();
 
-        jpql.append("SELECT v FROM VendaCliente v WHERE 0=0 ");
+
+        jpql.append("SELECT p FROM Pedido p WHERE 0=0 ");
 
         if (taxaInicial != null) {
-            jpql.append("AND v.percentual >= :taxaInicial ");
+            jpql.append("AND p.taxaAdministrativa >= :taxaInicial ");
             parametros.put("taxaInicial", taxaInicial);
         }
 
         if (taxaFinal != null) {
-            jpql.append("AND v.percentual <= :taxaFinal ");
+            jpql.append("AND p.taxaAdministrativa <= :taxaFinal");
             parametros.put("taxaFinal", taxaFinal);
         }
-        //  var jpql = "SELECT v FROM VendaCliente v WHERE v.percentual BETWEEN :taxaInicial AND :taxaFinal";
 
-        TypedQuery<VendaCliente> query = entityManager.createQuery(jpql.toString(), VendaCliente.class);
 
+        TypedQuery<Pedido> query = manager.createQuery(jpql.toString(), Pedido.class);
         parametros.forEach(query::setParameter);
-
         return query.getResultList();
     }
 }

@@ -1,6 +1,6 @@
 package br.com.queroparcelado.domain.repository;
 
-import br.com.queroparcelado.domain.model.Permissao;
+import br.com.queroparcelado.domain.model.login.Permissao;
 import org.springframework.stereotype.Repository;
 
 @Repository
