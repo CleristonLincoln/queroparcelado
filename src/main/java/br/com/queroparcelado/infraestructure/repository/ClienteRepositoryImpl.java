@@ -1,9 +1,8 @@
 package br.com.queroparcelado.infraestructure.repository;
 
+import org.springframework.stereotype.Repository;
 
-import br.com.queroparcelado.domain.repository.ClienteRepository;
-
+@Repository
 public class ClienteRepositoryImpl {
-
 
 }
