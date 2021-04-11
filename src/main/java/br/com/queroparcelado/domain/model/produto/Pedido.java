@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -57,7 +58,7 @@ public class Pedido {
     private LocalDateTime dataTransacao;
 
     @JsonIgnoreProperties("pedido")
-    @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Parcela> parcelas;
 
     @ManyToOne

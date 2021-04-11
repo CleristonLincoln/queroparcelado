@@ -64,7 +64,7 @@ public class ClienteService {
     Cliente validarCliente(Long idCliente) {
         Optional<Cliente> cliente = clienteRepository.findById(idCliente);
         if (cliente.isEmpty()) {
-            throw new NegocioException(String.format("Cliente não encontrato com o código %d", idCliente));
+            throw new EntidadeNaoEncontrataException(String.format("Cliente não encontrato com o código %d", idCliente));
         }
         return cliente.get();
     }
