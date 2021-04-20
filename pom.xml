@@ -82,6 +82,14 @@
                     <target>11</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <url>${env.JDBC_DATABASE_URL}</url>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
