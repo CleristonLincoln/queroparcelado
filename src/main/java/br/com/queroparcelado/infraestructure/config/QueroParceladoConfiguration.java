@@ -13,6 +13,6 @@ public class QueroParceladoConfiguration {
 
 
     @Getter@Setter
-    private String originAllow = CORS_NAME;
+    private String originAllow = "*";
 
 }
