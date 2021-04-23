@@ -62,6 +62,9 @@ public class Cliente {
     @JoinColumn(name = "id_indicador")
     private Cliente indicador;
 
+    @Length(min = 4,message = "Senha deve ter no mínimo 4 caracteres")
+    private String senha;
+
     @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     List<Pedido> pedidoList = new ArrayList<>();

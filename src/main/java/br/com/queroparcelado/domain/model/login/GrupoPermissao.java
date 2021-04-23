@@ -1,6 +1,5 @@
 package br.com.queroparcelado.domain.model.login;
 
-import br.com.queroparcelado.domain.model.login.Permissao;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

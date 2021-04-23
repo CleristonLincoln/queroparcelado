@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Usuario<Grupo> {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +36,7 @@ public class Usuario<Grupo> {
     private LocalDateTime dataCadastro;
 
     @ManyToMany
-    @JoinTable(name = "usuario_x_grupo_permissao", joinColumns = @JoinColumn(name = "id_usuario"),
+    @JoinTable(name = "cliente_x_grupo_permissao", joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_grupo_permissao"))
     private List<GrupoPermissao> grupos = new ArrayList<>();
 }
