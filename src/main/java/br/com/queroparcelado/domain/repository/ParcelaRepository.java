@@ -12,6 +12,6 @@ public interface ParcelaRepository extends CustomJpaRepository<Parcela, Long>{
     @Query("SELECT SUM(p.valor) FROM Parcela p WHERE p.pedido.id = :idPedido")
     BigDecimal somaParcelas(Long idPedido);
 
-
     List<Parcela> findParcelaByDataVencimentoBetween(LocalDate dataInicial, LocalDate dataFinal);
+
 }

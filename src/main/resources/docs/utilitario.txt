@@ -1,0 +1,4 @@
+senha keytool <chave, valor>
+queroparcelado dcerf&^gfy%knuh
+
+keytool -genkey -alias queroparcelado -keyalg RSA -keypass dcerf^gfy%knuh -keystore queroparcelado.jks -storepass melkor
