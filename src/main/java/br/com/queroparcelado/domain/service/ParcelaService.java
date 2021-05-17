@@ -39,9 +39,9 @@ public class ParcelaService {
 
         List<Parcela> parcelas = new ArrayList<>();
 
-        BigDecimal valorPedido = pedido.getValor()
+        BigDecimal valorPedido = pedido.getValorProposta()
                 .add(
-                        pedido.getValor()
+                        pedido.getValorProposta()
                         .multiply(taxa)
                 );
 

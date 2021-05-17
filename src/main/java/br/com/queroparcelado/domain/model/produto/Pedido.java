@@ -11,6 +11,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,7 +44,10 @@ public class Pedido {
     private String codigoBarra;
 
     @Positive
-    private BigDecimal valor;
+    private BigDecimal valorProposta;
+
+    @Positive
+    private BigDecimal valorFinal;
 
    @PositiveOrZero
     private BigDecimal qtdParcela;
@@ -56,6 +61,19 @@ public class Pedido {
 
     @CreationTimestamp
     private LocalDateTime dataTransacao;
+
+    @Enumerated(EnumType.STRING)
+    private FormaRecebimento formaRecebimento;
+
+    private String endereco;
+    private String numero;
+    private String cep;
+    private String bairro;
+    private String cidade;
+
+    private String banco;
+    private String agencia;
+    private String conta;
 
     @JsonIgnoreProperties("pedido")
     @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

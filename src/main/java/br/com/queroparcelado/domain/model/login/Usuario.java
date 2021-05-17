@@ -1,5 +1,6 @@
 package br.com.queroparcelado.domain.model.login;
 
+import br.com.queroparcelado.domain.model.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,11 @@ public class Usuario {
     @Column(nullable = false)
     private LocalDateTime dataCadastro;
 
-    @ManyToMany
-    @JoinTable(name = "cliente_x_grupo_permissao", joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_grupo_permissao"))
-    private List<GrupoPermissao> grupos = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "id_permissao")
+    private Permissao permissao;
 }
