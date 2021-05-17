@@ -5,6 +5,8 @@ import br.com.queroparcelado.domain.exception.JaExisteException;
 import br.com.queroparcelado.domain.exception.NegocioException;
 import br.com.queroparcelado.domain.model.Cliente;
 import br.com.queroparcelado.domain.repository.ClienteRepository;
+import br.com.queroparcelado.domain.utils.EnviarSMS;
+import br.com.queroparcelado.domain.utils.GerarSenhaUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +41,16 @@ public class ClienteService {
 
         validarClienteJaExist(cliente);
 
-        return clienteRepository.save(cliente);
+        // gera um codigo aleatorio
+        cliente.setCodigoConfirmacao(GerarSenhaUtil.gerarSenha());
+
+        // salva o cliente
+        Cliente novoCliente = clienteRepository.save(cliente);
+
+        // envia o sms para o celular do cliente para confirmacao de sua conta
+        EnviarSMS.sendSMS(novoCliente.getFone(), novoCliente.getCodigoConfirmacao());
+
+        return novoCliente;
     }
 
     private void validarClienteJaExist(Cliente cliente) {

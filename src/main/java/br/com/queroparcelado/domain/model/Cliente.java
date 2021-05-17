@@ -65,6 +65,10 @@ public class Cliente {
     @Length(min = 4,message = "Senha deve ter no mínimo 4 caracteres")
     private String senha;
 
+    private String codigoConfirmacao;
+
+    private Boolean ativo;
+
     @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     List<Pedido> pedidoList = new ArrayList<>();
