@@ -11,8 +11,6 @@ public class EnviarSMS {
         String type = "&type=9&number=";
 
         String ACCESS_KEY = "0V31IY5DQZP15JOOM5PXIVDC";
-        System.out.println(url + ACCESS_KEY + type + numberPhone + "&msg=Olá sua senha de confirmação do " +
-                "queroparcelado é: " + password);
 
         String sendUrl = url + ACCESS_KEY + type + numberPhone +
                 "&msg=Olá sua validação de telefone do queroparcelado é: " + password;
