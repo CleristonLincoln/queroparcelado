@@ -62,8 +62,8 @@ public class Pedido {
     @CreationTimestamp
     private LocalDateTime dataTransacao;
 
-    @Enumerated(EnumType.STRING)
-    private FormaRecebimento formaRecebimento;
+/*    @Enumerated(EnumType.STRING)
+    private FormaRecebimento formaRecebimento;*/
 
     private String endereco;
     private String numero;
