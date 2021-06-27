@@ -93,8 +93,8 @@ CREATE TABLE permissao
 CREATE TABLE usuario
 (
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-    login         VARCHAR(20),
-    senha         VARCHAR(55),
+    login         VARCHAR(255),
+    senha         VARCHAR(255),
     data_cadastro DATETIME,
 
     id_cliente    BIGINT,
