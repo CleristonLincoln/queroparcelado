@@ -2,6 +2,7 @@ package br.com.queroparcelado.core.webConfig.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,45 +27,44 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/clientes/**").permitAll()
-                .and()
                 .csrf().disable()
+              /*  .authorizeRequests()
+                .anyRequest().fullyAuthenticated()
+                    .antMatchers(HttpMethod.POST,"/cliente/**").permitAll()
+           .and()*/
                 .cors()
-            .and()
-                .oauth2ResourceServer()
-                .jwt()
+           .and()
+                .oauth2ResourceServer().jwt()
                 .jwtAuthenticationConverter(jwtAuthenticationConverter())
         ;
     }
 
     @Bean
-    public JwtDecoder jwtDecoder(){
+    public JwtDecoder jwtDecoder() {
         var secretKey = new SecretKeySpec("ewewedwwkemwkecnwojdcnodzcdjscnuoiurferjfn;ajfpwoeufbejofbwojefwbef".getBytes(), "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
     }
 
-    private JwtAuthenticationConverter jwtAuthenticationConverter(){
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
 
         var jwtConverter = new JwtAuthenticationConverter();
 
         jwtConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
             var aut = jwt.getClaimAsStringList("authorities");
-            if (aut == null){
+            if (aut == null) {
                 aut = Collections.emptyList();
             }
 
             return aut.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
-
         });
 
         return jwtConverter;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

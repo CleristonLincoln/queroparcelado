@@ -37,7 +37,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode("123"))
                 .authorizedGrantTypes("password", "refresh_token")
                 .scopes("write", "read")
-                .accessTokenValiditySeconds(2 * 60 * 60)
+                .accessTokenValiditySeconds(24 * 60 * 60) // 1 mes
                 .refreshTokenValiditySeconds(60*60*24)
         .and()
             .withClient("check_token")
