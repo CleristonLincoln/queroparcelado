@@ -2,14 +2,19 @@ package br.com.queroparcelado.domain.service;
 
 import br.com.queroparcelado.domain.exception.EntidadeNaoEncontrataException;
 import br.com.queroparcelado.domain.exception.JaExisteException;
-import br.com.queroparcelado.domain.exception.NegocioException;
 import br.com.queroparcelado.domain.model.Cliente;
+import br.com.queroparcelado.domain.model.dto.ValidarClienteDTO;
+import br.com.queroparcelado.domain.model.login.Permissao;
+import br.com.queroparcelado.domain.model.login.Usuario;
 import br.com.queroparcelado.domain.repository.ClienteRepository;
+import br.com.queroparcelado.domain.repository.PermissaoRepository;
+import br.com.queroparcelado.domain.repository.UsuarioRepository;
 import br.com.queroparcelado.domain.utils.EnviarSMS;
 import br.com.queroparcelado.domain.utils.GerarSenhaUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +25,15 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private PermissaoRepository permissaoRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
 
     public List<Cliente> buscarClientes() {
@@ -43,14 +57,26 @@ public class ClienteService {
 
         // gera um codigo aleatorio
         cliente.setCodigoConfirmacao(GerarSenhaUtil.gerarSenha());
-
-        // salva o cliente
-        Cliente novoCliente = clienteRepository.save(cliente);
+        cliente.setAtivo(false);
 
         // envia o sms para o celular do cliente para confirmacao de sua conta
-        EnviarSMS.sendSMS(novoCliente.getFone(), novoCliente.getCodigoConfirmacao());
+        String senha = EnviarSMS.sendSMS(cliente.getFone());
 
-        return novoCliente;
+        cliente.setCodigoConfirmacao(senha);
+
+        Usuario usuario = new Usuario();
+        usuario.setLogin(cliente.getEmail());
+        usuario.setSenha(passwordEncoder.encode(cliente.getSenha()));
+
+
+        Permissao permissao = permissaoRepository.findById(2L).get();
+        usuario.setPermissao(permissao);
+
+        Cliente clienteSalvo = clienteRepository.save(cliente);
+        usuario.setCliente(clienteSalvo);
+
+        usuarioRepository.save(usuario);
+        return clienteSalvo;
     }
 
     private void validarClienteJaExist(Cliente cliente) {
@@ -99,6 +125,26 @@ public class ClienteService {
     public void deletarCliente(Long id) {
         validarCliente(id);
         clienteRepository.deleteById(id);
+    }
+
+    public Boolean validarSeClienteAtivo(Long idCliente) {
+        Optional<Cliente> c = clienteRepository.findById(idCliente);
+        return c.isPresent() && c.get().getAtivo();
+    }
+
+    public Boolean validarSenhaCliente(String cpf, String senha) {
+        Cliente c = clienteRepository
+                .findByCpfAndCodigoConfirmacao(cpf, senha);
+        return c != null;
+    }
+
+    /**gera uma nova senha de acesso e reenvia para o cliente
+     *
+     * @param cpf Strinh
+     * @return boolean
+     */
+    public Boolean gerarNovaSenha(String cpf) {
+        return null;
     }
 
 }

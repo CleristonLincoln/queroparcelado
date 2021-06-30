@@ -4,6 +4,7 @@ import br.com.queroparcelado.domain.model.Configuracao;
 import br.com.queroparcelado.domain.service.ConfiguracaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ public class ConfiguracaoController {
     @Autowired
     private ConfiguracaoService configuracaoService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping
     public List<Configuracao> listarConfiguracoes(){
         return configuracaoService.buscarTodas();
