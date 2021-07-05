@@ -1,5 +1,6 @@
 package br.com.queroparcelado.api.controller;
 
+import br.com.queroparcelado.domain.model.dto.PedidoDTO;
 import br.com.queroparcelado.domain.model.produto.Pedido;
 import br.com.queroparcelado.domain.repository.PedidoRepository;
 import br.com.queroparcelado.domain.service.PedidoService;
@@ -47,8 +48,8 @@ public class PedidoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Pedido salvarPedido(@Valid @RequestBody Pedido pedido) {
-        return pedidoService.salvarPedido(pedido);
+    public Pedido salvarPedido(@Valid @RequestBody PedidoDTO pedidoDTO) {
+        return pedidoService.salvarPedido(pedidoDTO);
     }
 
     @GetMapping("clientes-pagamento-a-vista")

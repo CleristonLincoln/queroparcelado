@@ -1,8 +1,6 @@
 package br.com.queroparcelado.domain.model.dto;
 
-import br.com.queroparcelado.domain.model.Configuracao;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,26 +11,22 @@ import java.math.BigDecimal;
 @Builder
 public class PedidoDTO {
 
+    private BigDecimal valorProposta;
+    private BigDecimal qtdParcelas;
 
-    BigDecimal valor;
-    Configuracao idParcelamento;
+    private String banco;
+    private String agencia;
+    private String conta;
 
-    FormaRecebimento formaRecebimento;
+    private String endereco;
+    private String numero;
+    private String cep;
+    private String bairro;
+    private String cidade;
 
-    String banco;
-    String agencia;
-    String conta;
+    private Long formaRecebimento;
+    private Long formaParcelamento;
+    private Long idCliente;
 
-    String cidade;
-    String endereco;
-    String numero;
-
-
-}
-
-@Data
-class FormaRecebimento{
-    Long id;
-    String descricao;
 
 }
