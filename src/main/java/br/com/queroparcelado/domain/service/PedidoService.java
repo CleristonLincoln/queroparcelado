@@ -6,15 +6,19 @@ import br.com.queroparcelado.domain.exception.NegocioException;
 import br.com.queroparcelado.domain.model.Cliente;
 import br.com.queroparcelado.domain.model.Configuracao;
 import br.com.queroparcelado.domain.model.dto.PedidoDTO;
+import br.com.queroparcelado.domain.model.login.Usuario;
 import br.com.queroparcelado.domain.model.produto.Pedido;
 import br.com.queroparcelado.domain.repository.ClienteRepository;
 import br.com.queroparcelado.domain.repository.ConfiguracaoRepository;
 import br.com.queroparcelado.domain.repository.PedidoRepository;
+import br.com.queroparcelado.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -38,35 +42,44 @@ public class PedidoService {
     @Autowired
     private ConfiguracaoRepository configuracaoRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     public Pedido salvarPedido(PedidoDTO pedidoDTO) {
 
-        Cliente cliente = clienteService.getCliente(queroParceladoSecurity.getUsuarioId()).get();
 
-        Optional<Configuracao> configuracao = configuracaoRepository.findById(pedidoDTO.getFormaRecebimento());
+        Usuario user = usuarioRepository.findById(pedidoDTO.getIdCliente()).get();
 
-        Pedido pedido = new Pedido().builder()
-                .valorFinal(pedidoDTO.getValorProposta()
-                        .multiply(configuracao.get().getTaxaAdministrativa())
-                        .multiply(configuracao.get().getTaxaCartao())
-                )
-                .valorProposta(pedidoDTO.getValorProposta())
-                .qtdParcela(configuracao.get().getQtdParcela())
+        Cliente cliente = clienteService.getCliente(user.getCliente().getId()).get();
 
-                .endereco(pedidoDTO.getEndereco())
-                .numero(pedidoDTO.getNumero())
-                .bairro(pedidoDTO.getBairro())
-                .cep(pedidoDTO.getCep())
-                .cidade(pedidoDTO.getCidade())
+        Configuracao configuracao = configuracaoRepository.findById(pedidoDTO.getFormaRecebimento()).get();
 
-                .banco(pedidoDTO.getBanco())
-                .agencia(pedidoDTO.getAgencia())
-                .conta(pedidoDTO.getConta())
-                .cliente(cliente)
-                .build();
+        var pedido = new Pedido();
+
+        pedido.setCliente(cliente);
+        pedido.setValorFinal(pedidoDTO.getValorProposta()
+                .multiply(configuracao.getTaxaAdministrativa())
+                .multiply(configuracao.getTaxaCartao()));
+        pedido.setValorProposta(pedidoDTO.getValorProposta());
+        pedido.setQtdParcela(pedidoDTO.getQtdParcela());
+
+        pedido.setEndereco(pedidoDTO.getEndereco());
+        pedido.setNumero(pedidoDTO.getNumero());
+        pedido.setBairro(pedidoDTO.getBairro());
+        pedido.setCep(pedidoDTO.getCep());
+        pedido.setCidade(pedidoDTO.getCidade());
+
+        pedido.setBanco(pedidoDTO.getBanco());
+        pedido.setAgencia(pedidoDTO.getAgencia());
+        pedido.setConta(pedidoDTO.getConta());
 
 
-         repository.save(pedido);
-         pedido.setParcelas(parcelaService.gerarParcelas(pedido));
+        try {
+            repository.save(pedido);
+            parcelaService.gerarParcelas(pedido);
+        } catch (Exception e){
+            throw new NegocioException("Falga ao salvar pedido!");
+        }
 
          return pedido;
     }

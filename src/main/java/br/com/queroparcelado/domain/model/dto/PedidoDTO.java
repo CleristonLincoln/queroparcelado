@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 public class PedidoDTO {
 
     private BigDecimal valorProposta;
-    private BigDecimal qtdParcelas;
+    private BigDecimal qtdParcela;
 
     private String banco;
     private String agencia;
@@ -20,13 +20,12 @@ public class PedidoDTO {
 
     private String endereco;
     private String numero;
-    private String cep;
     private String bairro;
+    private String cep;
     private String cidade;
 
     private Long formaRecebimento;
     private Long formaParcelamento;
     private Long idCliente;
-
 
 }

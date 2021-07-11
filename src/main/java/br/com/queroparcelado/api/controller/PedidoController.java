@@ -6,6 +6,7 @@ import br.com.queroparcelado.domain.repository.PedidoRepository;
 import br.com.queroparcelado.domain.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,7 @@ public class PedidoController {
         return pedidoRepository.findByClienteId(idCliente);
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Pedido salvarPedido(@Valid @RequestBody PedidoDTO pedidoDTO) {
