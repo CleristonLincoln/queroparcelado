@@ -36,8 +36,4 @@ public class Configuracao {
     @Column(nullable = false)
     private BigDecimal qtdParcela;
 
-    private BigDecimal valorMinimo;
-
-    private BigDecimal valorMaximo;
-
 }

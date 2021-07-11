@@ -17,7 +17,7 @@ public class WebConfig  {
     public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(List.of("http://localhost:4200","https://you.server.domain.com", "https://queroparcelado-ui.herokuapp.com"));
+        config.setAllowedOrigins(List.of("http://localhost:4200", "https://queroparcelado-ui.herokuapp.com"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
 
