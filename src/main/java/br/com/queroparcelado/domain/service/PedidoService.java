@@ -1,7 +1,6 @@
 package br.com.queroparcelado.domain.service;
 
 import br.com.queroparcelado.core.webConfig.security.QueroParceladoSecurity;
-import br.com.queroparcelado.domain.exception.EntidadeNaoEncontrataException;
 import br.com.queroparcelado.domain.exception.NegocioException;
 import br.com.queroparcelado.domain.model.Cliente;
 import br.com.queroparcelado.domain.model.Configuracao;
@@ -13,13 +12,9 @@ import br.com.queroparcelado.domain.repository.ConfiguracaoRepository;
 import br.com.queroparcelado.domain.repository.PedidoRepository;
 import br.com.queroparcelado.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.security.Principal;
-import java.util.Optional;
 
 @Service
 public class PedidoService {
@@ -85,5 +80,11 @@ public class PedidoService {
     }
 
 
+    public ResponseEntity<Pedido> alterarStatusRecebimento(Long idPedido, boolean status) {
+        Pedido pedido = repository.findById(idPedido).get();
+        pedido.setRepassado(status);
+        repository.save(pedido);
 
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
