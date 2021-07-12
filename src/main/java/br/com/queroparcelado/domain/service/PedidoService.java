@@ -73,7 +73,7 @@ public class PedidoService {
             repository.save(pedido);
             parcelaService.gerarParcelas(pedido);
         } catch (Exception e){
-            throw new NegocioException("Falga ao salvar pedido!");
+            throw new NegocioException("Falha ao salvar pedido!");
         }
 
          return pedido;
