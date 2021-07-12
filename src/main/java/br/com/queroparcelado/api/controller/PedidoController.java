@@ -6,6 +6,7 @@ import br.com.queroparcelado.domain.repository.PedidoRepository;
 import br.com.queroparcelado.domain.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,6 +58,11 @@ public class PedidoController {
     @GetMapping("clientes-pagamento-a-vista")
     public List<Pedido> clientesParcelamentoAVista() {
         return pedidoRepository.findAll(valorAVista());
+    }
+
+    @GetMapping("alterar-recebimento/{idPedido}/{status}")
+    public ResponseEntity<Pedido> alterarStatusRecebimento(@PathVariable Long idPedido, @PathVariable boolean status){
+        return pedidoService.alterarStatusRecebimento(idPedido, status);
     }
 
 }
