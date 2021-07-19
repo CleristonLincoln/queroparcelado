@@ -29,46 +29,20 @@ public class ParcelaService {
 
     public List<Parcela> gerarParcelas(Pedido pedido) {
 
-        if (pedido.getTaxaAdministrativa() == null){
-            pedido.setTaxaAdministrativa(configuracaoService
-                    .buscarConfiguracaoPelaParcela(pedido.getQtdParcela()).getTaxaAdministrativa());
-        }
-
-        BigDecimal taxa = (pedido.getTaxaCartao().add(pedido.getTaxaAdministrativa()))
-                .divide(new BigDecimal(100), 6, RoundingMode.DOWN);
-
         List<Parcela> parcelas = new ArrayList<>();
-
-        BigDecimal valorPedido = pedido.getValorProposta()
-                .add(
-                        pedido.getValorProposta()
-                        .multiply(taxa)
-                );
-
-        // valor atualizado com as taxas
-        BigDecimal valorParcela = valorPedido.divide(pedido.getQtdParcela(), 2, RoundingMode.DOWN);
-
-        BigDecimal somaParcelas = BigDecimal.ZERO;
 
         for (int i = 1; i <= pedido.getQtdParcela().intValue(); i++) {
 
             LocalDate localDate = pedido.getDataTransacao().toLocalDate().plusMonths(i);
 
-            if (i == pedido.getQtdParcela().intValue()) {
-                valorParcela = valorPedido.subtract(somaParcelas);
-            }
-
             Parcela parcela = Parcela.builder()
                     .dataVencimento(localDate)
                     .ordem(i)
                     .pedido(pedido)
-                    .valor(valorParcela)
+                    .valor(pedido.getValorFinal().divide(pedido.getQtdParcela(), 2, RoundingMode.HALF_DOWN))
                     .build();
 
             parcelas.add(parcela);
-
-            somaParcelas = somaParcelas.add(parcela.getValor());
-
         }
         return repository.saveAll(parcelas);
     }

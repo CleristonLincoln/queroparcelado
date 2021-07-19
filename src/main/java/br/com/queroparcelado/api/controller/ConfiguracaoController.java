@@ -26,7 +26,7 @@ public class ConfiguracaoController {
     @Autowired
     private ConfiguracaoService configuracaoService;
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("permitAll()")
     @GetMapping
     public List<Configuracao> listarConfiguracoes(){
         return configuracaoService.buscarTodas();
@@ -37,6 +37,7 @@ public class ConfiguracaoController {
         return configuracaoService.buscarPorId(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<?> salvar(@Valid @RequestBody Configuracao configuracao){
         return configuracaoService.salvar(configuracao);

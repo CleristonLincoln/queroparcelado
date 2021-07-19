@@ -41,13 +41,17 @@ public class ClienteService {
     }
 
     public ResponseEntity<Cliente> buscarCliente(Long idCliente) {
+        Optional<Cliente> cliente = getCliente(idCliente);
+        return ResponseEntity.ok(cliente.get());
+    }
 
+    public Optional<Cliente> getCliente(Long idCliente) {
         Optional<Cliente> cliente = clienteRepository.findById(idCliente);
 
         if (cliente.isEmpty()) {
             throw new EntidadeNaoEncontrataException(String.format("Cliente não encontrato com o código %d", idCliente));
         }
-        return ResponseEntity.ok(cliente.get());
+        return cliente;
     }
 
 
@@ -99,10 +103,7 @@ public class ClienteService {
     }
 
     Cliente validarCliente(Long idCliente) {
-        Optional<Cliente> cliente = clienteRepository.findById(idCliente);
-        if (cliente.isEmpty()) {
-            throw new EntidadeNaoEncontrataException(String.format("Cliente não encontrato com o código %d", idCliente));
-        }
+        Optional<Cliente> cliente = getCliente(idCliente);
         return cliente.get();
     }
 
