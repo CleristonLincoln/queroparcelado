@@ -35,7 +35,7 @@ public class PedidoController {
 
     @GetMapping
     public List<Pedido> buscarTodos() {
-        return pedidoRepository.findAll();
+        return pedidoRepository.buscarPedidosOrderDesc();
     }
 
     @GetMapping("filtrar-por-taxa")
